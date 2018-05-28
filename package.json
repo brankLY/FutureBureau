@@ -1,0 +1,30 @@
+{
+  "name": "chaincode",
+  "version": "0.0.1",
+  "description": "Chaincode for token management",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/**/*.test.js",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "TODO"
+  },
+  "keywords": [
+    "chaincode"
+  ],
+  "author": "TBD",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "nyc": "11.8.0",
+    "sinon": "5.0.10"
+  },
+  "dependencies": {
+    "jsrsasign": "8.0.12",
+    "mocha": "5.2.0"
+  }
+}
