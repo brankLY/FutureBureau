@@ -4,7 +4,7 @@
   "description": "Chaincode for token management",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha test/**/*.test.js",
+    "test": "EARTH_LOGGING_LEVEL=none nyc mocha test/**/*.test.js",
     "doc": "jsdoc -c conf/jsdoc.json",
     "start": "node chaincode.js",
     "lint": "eslint ."
@@ -38,14 +38,15 @@
   },
   "nyc": {
     "exclude": [
-      "test/**/*.js"
+      "test/**/*.js",
+      "lib/utils/Logger.js"
     ],
     "include": [
       "lib/**/*.js"
     ],
-    "lines": 10,
-    "statements": 10,
-    "functions": 10,
-    "branches": 10
+    "lines": 70,
+    "statements": 70,
+    "functions": 70,
+    "branches": 60
   }
 }

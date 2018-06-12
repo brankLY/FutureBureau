@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-expressions */
+const MockStub = require('../mock-stub.js');
+const IdentityService = require('../../lib/acl/IdentityService');
 const { expect } = require('chai');
-const Certificate = require('../../lib/utils/Certificate');
+const stub = new MockStub();
 
-describe('Test utils/Certificate', () => {
+describe('Test IdentityService', () => {
   const ADMIN_CERT = '-----BEGIN CERTIFICATE-----\n' +
     'MIIB/jCCAaWgAwIBAgIUJ0FIBtQPv8eS1d2BSuEZG+1b81EwCgYIKoZIzj0EAwIw\n' +
     'cDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\n' +
@@ -17,20 +19,34 @@ describe('Test utils/Certificate', () => {
     'AiB2sMOGoAV52IY1oZXdwLG+HzVXk0G4oUYgq2/DRZi66g==\n' +
     '-----END CERTIFICATE-----\n';
 
-  it('Certificate Test', () => {
-    const certificate = new Certificate(ADMIN_CERT);
-    expect(certificate).exist;
-    expect(certificate.name).exist;
-    expect(certificate.name).to.equal('admin');
-    const name = certificate.getName();
+  it('IdentityService should provide certificate info', async () => {
+    const s = new IdentityService(stub);
+    s.loadCertificate();
+    const name = s.getName();
     expect(name).to.equal('admin');
-    const pem = certificate.getCertificate();
-    expect(pem).to.equal(ADMIN_CERT);
-    const publicKey = certificate.getPublicKey();
-    expect(publicKey).exist;
-    const issuer = certificate.getIssuer();
+    const certificate = s.getCertificate();
+    expect(certificate).to.equal(ADMIN_CERT);
+    const issuer = s.getIssuer();
     expect(issuer).exist;
-    const identifier = certificate.getIdentifier();
+    const identifier = s.getIdentifier();
     expect(identifier).exist;
+  });
+
+  it('IdentityService should lazy load certificate info', () => {
+    let s = new IdentityService(stub);
+    const name = s.getName();
+    expect(name).to.equal('admin');
+
+    s = new IdentityService(stub);
+    const certificate = s.getCertificate();
+    expect(certificate).to.equal(ADMIN_CERT);
+
+    s = new IdentityService(stub);
+    const issuer = s.getIssuer();
+    expect(issuer).to.exist;
+
+    s = new IdentityService(stub);
+    const identifier = s.getIdentifier();
+    expect(identifier).to.exist;
   });
 });
