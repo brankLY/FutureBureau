@@ -1,10 +1,10 @@
 {
-  "name": "chaincode",
+  "name": "earth",
   "version": "0.0.1",
   "description": "Chaincode for token management",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.test.js",
+    "test": "nyc mocha test/**/*.test.js",
     "doc": "jsdoc -c conf/jsdoc.json",
     "start": "node chaincode.js",
     "lint": "eslint ."
@@ -19,17 +19,33 @@
   "author": "TBD",
   "license": "SEE LICENSE IN LICENSE.md",
   "devDependencies": {
+    "chai": "4.1.2",
     "eslint": "^4.9.0",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-plugin-import": "^2.7.0",
     "jsdoc": "3.5.5",
+    "mocha": "5.2.0",
     "nyc": "11.8.0",
+    "rimraf": "2.6.2",
     "sinon": "5.0.10",
-    "mocha": "5.2.0"
+    "utf8": "3.0.0"
   },
   "dependencies": {
     "fabric-shim": "1.1.2",
     "jsrsasign": "8.0.12",
-    "mathjs": "4.4.1"
+    "mathjs": "4.4.1",
+    "winston": "2.4.2"
+  },
+  "nyc": {
+    "exclude": [
+      "test/**/*.js"
+    ],
+    "include": [
+      "lib/**/*.js"
+    ],
+    "lines": 10,
+    "statements": 10,
+    "functions": 10,
+    "branches": 10
   }
 }

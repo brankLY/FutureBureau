@@ -1,14 +1,22 @@
+/* eslint-disable no-unused-expressions */
 const Stub = require('../mock-stub');
-const assert = require('assert');
+const {expect} = require('chai');
 
 const stub = new Stub();
 
-
 const User = require('../../lib/model/user');
+const USER_PREFIX = 'earth.user';
 
 describe('Test User', () => {
+  before(async () => {
+    await stub.reset();
+  });
   it('Constructor Test', () => {
-    console.log('TDB');
+    try {
+      new User();
+    } catch (e) {
+
+    }
   });
 
   it('Create new User with CreateUserOption should success', async () => {
@@ -16,27 +24,30 @@ describe('Test User', () => {
       id: 'test',
       name: 'zhangsan',
       org: 'org1',
-      role: 'student',
+      role: 'user',
     };
     await User.Create(stub, opts);
 
-    let user = (await stub.getState(opts.id)).toString('utf8');
+    let user = await stub.getState(stub.createCompositeKey(USER_PREFIX, [opts.id]));
+    expect(user).exist;
+    user = user.toString('utf8');
     user = JSON.parse(user);
-    assert.equal(user.id, opts.id);
-    assert.equal(user.name, opts.name);
-    assert.equal(user.org, opts.org);
-    assert.equal(user.role, opts.role);
-    assert.deepEqual(user.wallets, []);
+    expect(user.id).to.equal(opts.id);
+    expect(user.name).to.equal(opts.name);
+    expect(user.org).to.equal(opts.org);
+    expect(user.role).to.equal(opts.role);
+    expect(user.wallets).to.deep.equal([]);
+    expect(user.canCreateNewToken).to.equal(false);
   });
 
   it('Get user by the common name of the certificate should success', async () => {
 
   });
 
-  it('Test exists', async () =>{
+  it('Test exists', async () => {
     let res = await User.Exists(stub, 'test');
-    assert.equal(res, true, 'user should exist');
+    expect(res).to.equal(true);
     res = await User.Exists(stub, 'dummy');
-    assert.equal(res, false, 'user should not exist');
+    expect(res).to.eql(false);
   });
 });
