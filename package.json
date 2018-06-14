@@ -6,7 +6,7 @@
   "scripts": {
     "test": "EARTH_LOGGING_LEVEL=none nyc mocha test/**/*.test.js",
     "doc": "jsdoc -c conf/jsdoc.json",
-    "start": "node chaincode.js",
+    "start": "node index.js",
     "lint": "eslint ."
   },
   "repository": {
