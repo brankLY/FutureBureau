@@ -2,7 +2,8 @@
 const shim = require('fabric-shim');
 
 const logger = require('./lib/utils/Logger').getLogger('Earth:index.js');
-
+const createUser = require('./lib/handler/user.create');
+const queryUser = require('./lib/handler/user.query');
 class Chaincode {
   async Init(stub) {
     const method = 'init';
@@ -20,9 +21,9 @@ class Chaincode {
     } = stub.getFunctionAndParameters();
     switch (fcn) {
       case 'user.query':
-        return shim.success(Buffer.from('success'));
+        return queryUser(stub, params);
       case 'user.create':
-        return shim.success(Buffer.from('create user success'));
+        return createUser(stub, params);
       default:
         return shim.error(Buffer.from(`${fcn} is not a valid function name`));
     }
