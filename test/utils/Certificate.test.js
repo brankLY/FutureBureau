@@ -4,17 +4,17 @@ const Certificate = require('../../lib/utils/Certificate');
 
 describe('Test utils/Certificate', () => {
   const ADMIN_CERT = '-----BEGIN CERTIFICATE-----\n' +
-    'MIIB/jCCAaWgAwIBAgIUJ0FIBtQPv8eS1d2BSuEZG+1b81EwCgYIKoZIzj0EAwIw\n' +
-    'cDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\n' +
-    'biBGcmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xGTAXBgNVBAMT\n' +
-    'EG9yZzEuZXhhbXBsZS5jb20wHhcNMTgwNjEyMDUyOTAwWhcNMTkwNjEyMDUzNDAw\n' +
-    'WjAhMQ8wDQYDVQQLEwZjbGllbnQxDjAMBgNVBAMTBWFkbWluMFkwEwYHKoZIzj0C\n' +
-    'AQYIKoZIzj0DAQcDQgAEG5B7R56co181Q2ZB/JrIzFOkMwBHt9AGP5vEjo0Ygyif\n' +
-    'VLxtwfMF18hyhw9nwC4uhkRYyQ8zjylAAWVffCDm+aNsMGowDgYDVR0PAQH/BAQD\n' +
-    'AgeAMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFOA4uxRPp4eWgl87E/ASeTLSGSBB\n' +
-    'MCsGA1UdIwQkMCKAIKItrzVrKqtXkupT419m/M7x1/GqKzorktv7+WpEjqJqMAoG\n' +
-    'CCqGSM49BAMCA0cAMEQCIBbYdKWW/vSsJAmxyGleTQQvcczl7tP48hRsGlzNErUT\n' +
-    'AiB2sMOGoAV52IY1oZXdwLG+HzVXk0G4oUYgq2/DRZi66g==\n' +
+    'MIICAjCCAaigAwIBAgIUQt5hB9GGf9ZV0TxB9CEunOH4nPAwCgYIKoZIzj0EAwIw\n' +
+    'czELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\n' +
+    'biBGcmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMT\n' +
+    'E2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMTgwNjE1MDUzOTAwWhcNMTkwNjE1MDU0\n' +
+    'NDAwWjAhMQ8wDQYDVQQLEwZjbGllbnQxDjAMBgNVBAMTBWFkbWluMFkwEwYHKoZI\n' +
+    'zj0CAQYIKoZIzj0DAQcDQgAEyqY5Nznpicbr+6m+6rzuaaLd8MMgzJ5XvxeVyFvo\n' +
+    'OCYs1g9PuJOO0d/6Pkv3yKWyZWAafTYA5aU8yE6GvjyQiqNsMGowDgYDVR0PAQH/\n' +
+    'BAQDAgeAMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFPd8aFyXmRrrVjThKvhZSkqE\n' +
+    'j64bMCsGA1UdIwQkMCKAIJZUB3yZtmKK6RU31ouClmtA9jIDecvBTx/YgqTavJWU\n' +
+    'MAoGCCqGSM49BAMCA0gAMEUCIQDuQXY9xUW2LfVuyKvVdM4M1cGCPBQND+xtJK8F\n' +
+    '7gDcnAIgLqWDBBb7irZ7JLqxBjHqzTvm34ym1ISQj2J03fzzwJY=\n' +
     '-----END CERTIFICATE-----\n';
 
   it('Certificate Test', () => {

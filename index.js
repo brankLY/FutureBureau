@@ -2,28 +2,41 @@
 const shim = require('fabric-shim');
 
 const logger = require('./lib/utils/Logger').getLogger('Earth:index.js');
-const createUser = require('./lib/handler/user.create');
-const queryUser = require('./lib/handler/user.query');
+const User = require('./lib/model/User');
+const Response = require('./lib/utils/Response');
+
+const UserHandler = require('./lib/handler/UserHandler');
+
 class Chaincode {
   async Init(stub) {
     const method = 'init';
     logger.enter(method);
+    logger.debug('Create init Admin Users');
+    const bootstrapUser = {
+      id: 'admin',
+      role: 'admin',
+      name: 'Earth BlockChain Bootstrap User',
+    };
+    const user = await User.Create(stub, bootstrapUser);
+    logger.debug('Successfully Created Bootstrap Earth Admin');
     logger.exit(method);
-    return shim.success();
+    return Response(true, user.toString());
   }
 
   async Invoke(stub) {
-    const method = 'invoke';
-    logger.enter(method);
+    logger.debug('############## Invoke Start ##############');
     const {
       fcn,
       params,
     } = stub.getFunctionAndParameters();
+    logger.debug('Invoke with fcn:%s and params:%j', fcn, params);
     switch (fcn) {
       case 'user.query':
-        return queryUser(stub, params);
+        return UserHandler.getOne(stub, params);
       case 'user.create':
-        return createUser(stub, params);
+        return UserHandler.create(stub, params);
+      case 'user.update':
+        return UserHandler.update(stub, params);
       default:
         return shim.error(Buffer.from(`${fcn} is not a valid function name`));
     }

@@ -4,8 +4,7 @@ const {expect} = require('chai');
 
 const stub = new Stub();
 
-const User = require('../../lib/model/user');
-const USER_PREFIX = 'earth.user';
+const User = require('../../lib/model/User');
 
 describe('Test User', () => {
   before(async () => {
@@ -13,9 +12,10 @@ describe('Test User', () => {
   });
   it('Constructor Test', () => {
     try {
+      // eslint-disable-next-line no-new
       new User();
     } catch (e) {
-
+      expect(e.message).to.equal('Missing Required Argument stub');
     }
   });
 
@@ -25,17 +25,15 @@ describe('Test User', () => {
       name: 'zhangsan',
       role: 'user',
     };
-    await User.Create(stub, opts);
+    const user = await User.Create(stub, opts);
 
-    let user = await stub.getState(stub.createCompositeKey(USER_PREFIX, [opts.id]));
     expect(user).exist;
-    user = user.toString('utf8');
-    user = JSON.parse(user);
     expect(user.id).to.equal(opts.id);
     expect(user.name).to.equal(opts.name);
     expect(user.role).to.equal(opts.role);
     expect(user.wallet).to.deep.equal([]);
     expect(user.canCreateNewToken).to.equal(false);
+
   });
 
   it('Create new User with a wrong id should throw error', async () => {
@@ -64,13 +62,20 @@ describe('Test User', () => {
   });
 
   it('Admin user can update a common user so that this common user can create new token', async () => {
-
+    const updatedUser = await User.Update(stub, 'admin', {canCreateNewToken: true});
+    expect(updatedUser).exist;
+    expect(updatedUser.id).to.equal('admin');
+    expect(updatedUser.name).to.equal('zhangsan');
+    expect(updatedUser.role).to.equal('user');
+    expect(updatedUser.canCreateNewToken).to.equal(true);
+    expect(updatedUser.wallet).to.deep.equal([]);
+    expect(updatedUser.constructor.name).to.equal('User');
   });
 
   it('Test exists', async () => {
     let res = await User.Exists(stub, 'admin');
     expect(res).to.equal(true);
     res = await User.Exists(stub, 'dummy');
-    expect(res).to.eql(false);
+    expect(res).to.equal(false);
   });
 });

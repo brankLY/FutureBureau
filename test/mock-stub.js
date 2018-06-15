@@ -62,7 +62,7 @@ class Stub {
       return content;
     } catch (e) {
       if (e.code === 'ENOENT') {
-        return null;
+        return Buffer.from('');
       }
       throw e;
     }
