@@ -14,11 +14,11 @@ class Chaincode {
     try {
       logger.debug('Create init Admin Users');
       const bootstrapUser = {
-        id: 'Admin@org1.example.com',
+        id: 'admin',
         role: 'admin',
         name: 'Earth BlockChain Bootstrap User',
       };
-      const user = await User.Create(stub, bootstrapUser);
+      const user = await User.Create(stub, bootstrapUser, true);
       logger.debug('Successfully Created Bootstrap Earth Admin');
       logger.exit(method);
       return Response(true, user.toString());
