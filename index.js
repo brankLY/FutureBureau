@@ -11,16 +11,20 @@ class Chaincode {
   async Init(stub) {
     const method = 'init';
     logger.enter(method);
-    logger.debug('Create init Admin Users');
-    const bootstrapUser = {
-      id: 'admin',
-      role: 'admin',
-      name: 'Earth BlockChain Bootstrap User',
-    };
-    const user = await User.Create(stub, bootstrapUser);
-    logger.debug('Successfully Created Bootstrap Earth Admin');
-    logger.exit(method);
-    return Response(true, user.toString());
+    try {
+      logger.debug('Create init Admin Users');
+      const bootstrapUser = {
+        id: 'Admin@org1.example.com',
+        role: 'admin',
+        name: 'Earth BlockChain Bootstrap User',
+      };
+      const user = await User.Create(stub, bootstrapUser);
+      logger.debug('Successfully Created Bootstrap Earth Admin');
+      logger.exit(method);
+      return Response(true, user.toString());
+    } catch (e) {
+      return Response(false, e.message);
+    }
   }
 
   async Invoke(stub) {
