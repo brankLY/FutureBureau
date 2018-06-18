@@ -1,5 +1,5 @@
 const MockStub = require('../mock-stub.js');
-const Token = require('../../lib/model/token');
+const Token = require('../../lib/model/Token');
 
 const stub = new MockStub();
 

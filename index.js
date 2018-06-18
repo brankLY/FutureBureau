@@ -11,7 +11,12 @@ class Chaincode {
   async Init(stub) {
     const method = 'init';
     logger.enter(method);
+    const { params } = stub.getFunctionAndParameters();
+    logger.debug('%s - call Init with params %j', method, params);
     try {
+      if (params[0] === 'upgrade') {
+        return Response(true, 'Success Updated');
+      }
       logger.debug('Create init Admin Users');
       const bootstrapUser = {
         id: 'admin',
@@ -41,6 +46,8 @@ class Chaincode {
         return UserHandler.create(stub, params);
       case 'user.update':
         return UserHandler.update(stub, params);
+      // case 'token.create':
+      //   return TokenHandler.create(stub, params);
       default:
         return shim.error(Buffer.from(`${fcn} is not a valid function name`));
     }
