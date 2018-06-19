@@ -15,6 +15,7 @@ class Chaincode {
     logger.debug('%s - call Init with params %j', method, params);
     try {
       if (params[0] === 'upgrade') {
+        logger.info('Successfully upgrade chaincode');
         return Response(true, 'Success Updated');
       }
       logger.debug('Create init Admin Users');

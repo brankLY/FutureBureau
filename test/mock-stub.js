@@ -33,6 +33,14 @@ class Stub {
     }
   }
 
+  setUserCtx(cert) {
+    this.user = cert;
+  }
+
+  cleanUserCtx() {
+    this.user = null;
+  }
+
   async reset() {
     return new Promise((resolve, reject) => {
       rimraf(this.basepath, (e) => {
@@ -44,6 +52,10 @@ class Stub {
         }
       });
     });
+  }
+
+  getTxTimestamp() {
+    return Date.now();
   }
 
   /**
@@ -98,7 +110,7 @@ class Stub {
   }
 
   splitCompositeKey(compositeKey) {
-    const result = { objectType: null, attributes: [] };
+    const result = {objectType: null, attributes: []};
     if (compositeKey && compositeKey.length > 1 && compositeKey.charAt(0) === COMPOSITEKEY_NS) {
       const splitKey = compositeKey.substring(1).split(MIN_UNICODE_RUNE_VALUE);
       if (splitKey[0]) {
@@ -127,11 +139,16 @@ class Stub {
       'CCqGSM49BAMCA0cAMEQCIBbYdKWW/vSsJAmxyGleTQQvcczl7tP48hRsGlzNErUT\n' +
       'AiB2sMOGoAV52IY1oZXdwLG+HzVXk0G4oUYgq2/DRZi66g==\n' +
       '-----END CERTIFICATE-----\n';
+    let user = ADMIN_CERT;
+    if (this.user) {
+      user = this.user;
+    }
 
     function getIdBytes() {
-      return Buffer.from(ADMIN_CERT);
+      return Buffer.from(user);
     }
-    return { getIdBytes };
+
+    return {getIdBytes};
   }
 }
 
