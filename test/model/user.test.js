@@ -159,7 +159,6 @@ describe('Test User', () => {
   });
 
   it('Create a new User to transfer token to', async () => {
-
     stub.setUserCtx(cert);
 
     const user = await User.Create(stub, target);
@@ -175,6 +174,21 @@ describe('Test User', () => {
 
   it('Transfer token with correct options should success', async () => {
     const admin = await User.Get(stub);
-    console.log(admin);
+    const res = await admin.transfer({
+      target: target.id,
+      tokenName: 'Bitcoin',
+      amount: '0.00001',
+    });
+    const resp = res.toJSON();
+
+    console.log(resp.wallet.Bitcoin);
+    expect(resp.wallet).exist;
+    expect(resp.wallet.Bitcoin).exist;
+    expect(resp.wallet.Bitcoin.amount).to.equal(9999.99999);
+    expect(resp.wallet.Bitcoin.history).exist;
+    expect(resp.wallet.Bitcoin.history.length).to.equal(2);
+    expect(resp.wallet.Bitcoin.history[1].from).to.equal('admin');
+    expect(resp.wallet.Bitcoin.history[1].to).to.equal(target.id);
+    expect(resp.wallet.Bitcoin.history[1].amount).to.equal('0.00001');
   });
 });
