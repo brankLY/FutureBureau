@@ -91,7 +91,6 @@ describe('Test User', () => {
     expect(admin.constructor.name).to.equal('User');
 
     let resp = admin.toString();
-    console.log(resp);
     resp = JSON.parse(resp);
     expect(resp).exist;
     expect(resp.id).to.equal('admin');
@@ -122,8 +121,13 @@ describe('Test User', () => {
     let admin = await User.Get(stub);
     expect(admin).exist;
     expect(admin.canCreateNewToken).to.equal(true);
-    const params = ['Bitcoin', 'BTC', '5', '10000'];
-    admin = await admin.createNewToken(params);
+    const createTokenRequest = {
+      name: 'Bitcoin',
+      symbol: 'BTC',
+      decimals: 5,
+      amount: 10000,
+    }
+    admin = await admin.createNewToken(createTokenRequest);
     const adminObj = admin.toJSON();
     expect(adminObj).exist;
     expect(adminObj.canCreateNewToken).to.equal(false);
@@ -189,5 +193,19 @@ describe('Test User', () => {
     expect(resp.wallet.Bitcoin.history[1].from).to.equal('admin');
     expect(resp.wallet.Bitcoin.history[1].to).to.equal(target.id);
     expect(resp.wallet.Bitcoin.history[1].amount).to.equal('0.00001');
+  });
+
+  it('Get Target, target should earn token', async () => {
+    stub.setUserCtx(cert);
+    let targetUser = await User.Get(stub);
+    targetUser = targetUser.toJSON();
+
+    expect(targetUser).exist;
+    expect(targetUser.wallet).exist;
+    expect(targetUser.wallet.Bitcoin).exist;
+    expect(targetUser.wallet.Bitcoin.amount).to.equal(0.00001);
+    expect(targetUser.wallet.Bitcoin.decimals).to.equal(5);
+    expect(targetUser.wallet.Bitcoin.history).exist;
+    expect(targetUser.wallet.Bitcoin.history.length).to.equal(1);
   });
 });

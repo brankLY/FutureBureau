@@ -55,7 +55,11 @@ class Stub {
   }
 
   getTxTimestamp() {
-    return Date.now();
+    return {
+      seconds: {
+        low: Date.now() / 1000,
+      },
+    };
   }
 
   /**
@@ -110,11 +114,11 @@ class Stub {
   }
 
   splitCompositeKey(compositeKey) {
-    const result = {objectType: null, attributes: []};
+    const result = { objectType: null, attributes: [] };
     if (compositeKey && compositeKey.length > 1 && compositeKey.charAt(0) === COMPOSITEKEY_NS) {
       const splitKey = compositeKey.substring(1).split(MIN_UNICODE_RUNE_VALUE);
-      if (splitKey[0]) {
-        result.objectType = splitKey[0];
+      if (splitKey[ 0 ]) {
+        result.objectType = splitKey[ 0 ];
         splitKey.pop();
         if (splitKey.length > 1) {
           splitKey.shift();
@@ -148,7 +152,7 @@ class Stub {
       return Buffer.from(user);
     }
 
-    return {getIdBytes};
+    return { getIdBytes };
   }
 }
 
