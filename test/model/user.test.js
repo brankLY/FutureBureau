@@ -181,7 +181,6 @@ describe('Test User', () => {
     });
     const resp = res.toJSON();
 
-    console.log(resp.wallet.Bitcoin);
     expect(resp.wallet).exist;
     expect(resp.wallet.Bitcoin).exist;
     expect(resp.wallet.Bitcoin.amount).to.equal(9999.99999);
