@@ -48,7 +48,9 @@ class Chaincode {
       case 'user.update':
         return UserHandler.update(stub, params);
       case 'user.createToken':
-        return UserHandler.create(stub, params);
+        return UserHandler.createToken(stub, params);
+      case 'user.transfer':
+        return UserHandler.transfer(stub, params);
       default:
         return shim.error(Buffer.from(`${fcn} is not a valid function name`));
     }
