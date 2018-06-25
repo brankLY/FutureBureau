@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 const Stub = require('../mock-stub');
-const {expect} = require('chai');
+const { expect } = require('chai');
 
 const stub = new Stub();
 
@@ -126,7 +126,7 @@ describe('Test User', () => {
       symbol: 'BTC',
       decimals: 5,
       amount: 10000,
-    }
+    };
     admin = await admin.createNewToken(createTokenRequest);
     const adminObj = admin.toJSON();
     expect(adminObj).exist;

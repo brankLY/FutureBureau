@@ -2,6 +2,7 @@
 const MockStub = require('../mock-stub.js');
 const IdentityService = require('../../lib/acl/IdentityService');
 const { expect } = require('chai');
+
 const stub = new MockStub();
 
 describe('Test IdentityService', () => {

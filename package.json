@@ -7,7 +7,7 @@
     "test": "EARTH_LOGGING_LEVEL=none nyc mocha test/**/*.test.js",
     "doc": "jsdoc -c conf/jsdoc.json",
     "start": "node index.js",
-    "lint": "eslint ."
+    "lint": "eslint lib"
   },
   "repository": {
     "type": "git",

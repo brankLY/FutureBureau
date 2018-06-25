@@ -4,12 +4,12 @@ const shim = require('fabric-shim');
 const logger = shim.newLogger('sample-cc');
 
 async function getAllResults(iterator, isHistory) {
-  let allResults = [];
+  const allResults = [];
   while (true) {
-    let res = await iterator.next();
+    const res = await iterator.next();
 
     if (res.value && res.value.value.toString()) {
-      let jsonRes = {};
+      const jsonRes = {};
       console.log(res.value.value.toString('utf8'));
 
       if (isHistory && isHistory === true) {
@@ -204,8 +204,8 @@ const Chaincode = class {
 
   async getHistory(stub, args) {
     try {
-      let iter = await stub.getHistoryForKey(args[0]);
-      let res = await getAllResults(iter);
+      const iter = await stub.getHistoryForKey(args[0]);
+      const res = await getAllResults(iter);
       console.log(res);
       return shim.success(Buffer.from(JSON.stringify(res)));
     } catch (e) {

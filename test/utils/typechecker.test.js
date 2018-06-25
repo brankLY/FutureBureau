@@ -48,7 +48,7 @@ describe('Test utils/typechecker', () => {
     assert.equal(res, false);
   });
 
-  it('checkBoolean()', async () =>{
+  it('checkBoolean()', async () => {
     let res = TypeChecker.checkBoolean(true);
     assert.equal(res, true);
     res = TypeChecker.checkBoolean(true);

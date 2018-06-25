@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 const Stub = require('../mock-stub');
-const {expect} = require('chai');
+const { expect } = require('chai');
 
 const stub = new Stub();
 
