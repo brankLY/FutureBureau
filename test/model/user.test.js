@@ -42,6 +42,64 @@ describe('Test User', () => {
     }
   });
 
+  it('Create new User without correct CreateUserOption should throw error', async () => {
+    try {
+      await User.Create(stub);
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('Missing Required param options or options is not a valid object');
+    }
+
+    try {
+      await User.Create(stub, 'dummy');
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('Missing Required param options or options is not a valid object');
+    }
+
+    try {
+      await User.Create(stub, {});
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('{} is not a valid CreateUserOption Object, Missing Required property id');
+    }
+
+    try {
+      await User.Create(stub, { id: 'admin' });
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('{"id":"admin"} is not a valid CreateUserOption Object, Missing Required property name');
+    }
+
+    try {
+      await User.Create(stub, { id: 'admin', name: 'zhangsan' });
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('{"id":"admin","name":"zhangsan"} is not a valid CreateUserOption Object, Missing Required property role');
+    }
+
+    try {
+      await User.Create(stub, { id: 123, name: 'zhangsan', role: 'admin' });
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('123 is not a valid string for CreateUserOption.id');
+    }
+
+    try {
+      await User.Create(stub, { id: 'admin', name: 123, role: 'admin' });
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('123 is not a valid string for CreateUserOption.name');
+    }
+
+    try {
+      await User.Create(stub, { id: 'admin', name: 'zhangsan', role: 123 });
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('123 is not a valid string for CreateUserOption.role');
+    }
+  });
+
   it('Create new User with CreateUserOption should success', async () => {
     const opts = {
       id: 'admin',
@@ -111,10 +169,102 @@ describe('Test User', () => {
     expect(admin.wallet.constructor.name).to.equal('Wallet');
   });
 
+  it('Create Token without permission should throw error', async () => {
+    const admin = await User.Get(stub);
+    expect(admin).exist;
+    expect(admin.canCreateNewToken).to.equal(false);
+    const createTokenRequest = {
+      name: 'Bitcoin',
+      symbol: 'BTC',
+      decimals: 5,
+      amount: 10000,
+    };
+    try {
+      await admin.createNewToken(createTokenRequest);
+      throw new Error('Test Fail');
+    } catch (e) {
+      expect(e.message).to.equal('Current user are not allowed to create new Token');
+    }
+  });
+
   it('Update User to grant createNewToken permission', async () => {
     const admin = await User.Update(stub, 'admin', { canCreateNewToken: true });
     expect(admin).exist;
     expect(admin.canCreateNewToken).to.equal(true);
+  });
+
+  it('Create Token with wrong options should throw error', async () => {
+    const admin = await User.Get(stub);
+    expect(admin).exist;
+    expect(admin.canCreateNewToken).to.equal(true);
+    const createTokenRequest = {
+      name: 'Bitcoin',
+      symbol: 'BTC',
+      decimals: 'dummy',
+      amount: 10000,
+    };
+    try {
+      await admin.createNewToken(createTokenRequest);
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.have.string('is not a valid CreateTokenOption Object');
+    }
+
+    try {
+      await admin.createNewToken();
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.have.string('is not a valid CreateTokenOption Object');
+    }
+
+    try {
+      await admin.createNewToken({name: 123});
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.have.string('is not a valid CreateTokenOption Object, Missing Required property symbol');
+    }
+
+    try {
+      await admin.createNewToken({name: 123, symbol: 'BTC'});
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.have.string('is not a valid CreateTokenOption Object, Missing Required property decimals');
+    }
+
+    try {
+      await admin.createNewToken({name: 123, symbol: 'BTC', decimals: '123'});
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.have.string('is not a valid CreateTokenOption Object, Missing Required property amount');
+    }
+
+    try {
+      await admin.createNewToken({name: 123, symbol: 'BTC', decimals: '123', amount: '1qwe31'});
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('Can not parse decimals or amount to a valid number');
+    }
+
+    try {
+      await admin.createNewToken({name: '123', symbol: 'BTC', decimals: '123', amount: '10000'});
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('123 is not a valid uint4 for CreateTokenOption.decimals');
+    }
+
+    try {
+      await admin.createNewToken({name: '123', symbol: 1111, decimals: '12', amount: '10000'});
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('1111 is not a valid string for CreateTokenOption.symbol');
+    }
+
+    try {
+      await admin.createNewToken({name: '123', symbol: 'BTC', decimals: '12', amount: -10000});
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('-10000 is not a valid Unsigned Int for CreateUserOption.canCreateNewToken');
+    }
   });
 
   it('Create Token with correct options should response success', async () => {
@@ -176,6 +326,16 @@ describe('Test User', () => {
     stub.cleanUserCtx();
   });
 
+  it('Create a User that already exist should throw error', async () => {
+    stub.setUserCtx(cert);
+    try {
+      await User.Create(stub, target);
+    } catch (e) {
+      expect(e.message).to.equal('User 9ec73604-0225-4d99-83d7-b858b499e639 already exists');
+    }
+    stub.cleanUserCtx();
+  });
+
   it('Transfer token with correct options should success', async () => {
     const admin = await User.Get(stub);
     const res = await admin.transfer({
@@ -207,5 +367,32 @@ describe('Test User', () => {
     expect(targetUser.wallet.Bitcoin.decimals).to.equal(5);
     expect(targetUser.wallet.Bitcoin.history).exist;
     expect(targetUser.wallet.Bitcoin.history.length).to.equal(1);
+    stub.cleanUserCtx();
+  });
+
+  it('Non-admin user can not call Update', async () => {
+    stub.setUserCtx(cert);
+    try {
+      await User.Update(stub, target.id, { role: 'admin' });
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('Only admin can update user info, current user is "user"');
+    }
+    stub.cleanUserCtx();
+  });
+
+  it('Update a user that does not exist should throw error', async () => {
+    try {
+      await User.Update(stub, 'dummyUser', { role: 'admin' });
+      throw new Error('Test Failed');
+    } catch (e) {
+      expect(e.message).to.equal('User dummyUser does not exist');
+    }
+  });
+
+  it('Admin can update a User to grant admin permission', async () => {
+    const newAdmin = await User.Update(stub, target.id, { role: 'admin' });
+    expect(newAdmin).exist;
+    expect(newAdmin.role).to.equal('admin');
   });
 });
