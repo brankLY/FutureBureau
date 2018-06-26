@@ -6,7 +6,7 @@ const stub = new Stub();
 
 const Wallet = require('../../lib/model/Wallet');
 
-describe('Test User', () => {
+describe('Test Wallet', () => {
   before(async () => {
     await stub.reset();
   });

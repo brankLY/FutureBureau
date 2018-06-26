@@ -12,6 +12,7 @@ describe('Test User', () => {
     name: 'user0',
     role: 'user',
   };
+  // cert for target user {{{
   const cert = '-----BEGIN CERTIFICATE-----\n' +
     'MIICwDCCAmagAwIBAgIUMdfKxK9vzQMDyfn6wtOJunKqtMMwCgYIKoZIzj0EAwIw\n' +
     'czELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\n' +
@@ -29,10 +30,13 @@ describe('Test User', () => {
     'BggqhkjOPQQDAgNIADBFAiEAwGbq0Z7wqTQm/vG2TU4y1IniWHhoitqLzW81+IOH\n' +
     'd+ACIACp77nySZ2j8JrY5MEDXrTd3ua+hOdAoAwARDp6e2ug\n' +
     '-----END CERTIFICATE-----\n';
+  // }}}
 
   before(async () => {
     await stub.reset();
   });
+
+  // Constructor Test {{{
   it('Constructor Test', () => {
     try {
       // eslint-disable-next-line no-new
@@ -41,7 +45,9 @@ describe('Test User', () => {
       expect(e.message).to.equal('Missing Required Argument stub');
     }
   });
+  // }}}
 
+  // Create new User without correct CreateUserOption should throw error {{{
   it('Create new User without correct CreateUserOption should throw error', async () => {
     try {
       await User.Create(stub);
@@ -99,7 +105,9 @@ describe('Test User', () => {
       expect(e.message).to.equal('123 is not a valid string for CreateUserOption.role');
     }
   });
+  // }}}
 
+  // Create new User with CreateUserOption should success {{{
   it('Create new User with CreateUserOption should success', async () => {
     const opts = {
       id: 'admin',
@@ -115,7 +123,9 @@ describe('Test User', () => {
     expect(user.wallet.tokens).to.deep.equal({});
     expect(user.canCreateNewToken).to.equal(false);
   });
+  // }}}
 
+  // Create new User with a wrong id should throw error {{{
   it('Create new User with a wrong id should throw error', async () => {
     try {
       const opts = {
@@ -129,14 +139,18 @@ describe('Test User', () => {
       expect(e.message).to.equal('Identity admin do not have permission to create new User user0');
     }
   });
+  // }}}
 
+  // Test exists {{{
   it('Test exists', async () => {
     let res = await User.Exists(stub, 'admin');
     expect(res).to.equal(true);
     res = await User.Exists(stub, 'dummy');
     expect(res).to.equal(false);
   });
+  // }}}
 
+  // Get user by the common name of the certificate should success {{{
   it('Get user by the common name of the certificate should success', async () => {
     let admin = await User.Get(stub);
     expect(admin).exist;
@@ -168,7 +182,9 @@ describe('Test User', () => {
     expect(admin.constructor.name).to.equal('User');
     expect(admin.wallet.constructor.name).to.equal('Wallet');
   });
+  // }}}
 
+  // Create Token without permission should throw error {{{
   it('Create Token without permission should throw error', async () => {
     const admin = await User.Get(stub);
     expect(admin).exist;
@@ -186,13 +202,17 @@ describe('Test User', () => {
       expect(e.message).to.equal('Current user are not allowed to create new Token');
     }
   });
+  // }}}
 
+  // Update User to grant createNewToken permission {{{
   it('Update User to grant createNewToken permission', async () => {
     const admin = await User.Update(stub, 'admin', { canCreateNewToken: true });
     expect(admin).exist;
     expect(admin.canCreateNewToken).to.equal(true);
   });
+  // }}}
 
+  // Create Token with wrong options should throw error {{{
   it('Create Token with wrong options should throw error', async () => {
     const admin = await User.Get(stub);
     expect(admin).exist;
@@ -218,55 +238,65 @@ describe('Test User', () => {
     }
 
     try {
-      await admin.createNewToken({name: 123});
+      await admin.createNewToken({ name: 123 });
       throw new Error('Test Failed');
     } catch (e) {
       expect(e.message).to.have.string('is not a valid CreateTokenOption Object, Missing Required property symbol');
     }
 
     try {
-      await admin.createNewToken({name: 123, symbol: 'BTC'});
+      await admin.createNewToken({ name: 123, symbol: 'BTC' });
       throw new Error('Test Failed');
     } catch (e) {
       expect(e.message).to.have.string('is not a valid CreateTokenOption Object, Missing Required property decimals');
     }
 
     try {
-      await admin.createNewToken({name: 123, symbol: 'BTC', decimals: '123'});
+      await admin.createNewToken({ name: 123, symbol: 'BTC', decimals: '123' });
       throw new Error('Test Failed');
     } catch (e) {
       expect(e.message).to.have.string('is not a valid CreateTokenOption Object, Missing Required property amount');
     }
 
     try {
-      await admin.createNewToken({name: 123, symbol: 'BTC', decimals: '123', amount: '1qwe31'});
+      await admin.createNewToken({
+        name: 123, symbol: 'BTC', decimals: '123', amount: '1qwe31',
+      });
       throw new Error('Test Failed');
     } catch (e) {
       expect(e.message).to.equal('Can not parse decimals or amount to a valid number');
     }
 
     try {
-      await admin.createNewToken({name: '123', symbol: 'BTC', decimals: '123', amount: '10000'});
+      await admin.createNewToken({
+        name: '123', symbol: 'BTC', decimals: '123', amount: '10000',
+      });
       throw new Error('Test Failed');
     } catch (e) {
       expect(e.message).to.equal('123 is not a valid uint4 for CreateTokenOption.decimals');
     }
 
     try {
-      await admin.createNewToken({name: '123', symbol: 1111, decimals: '12', amount: '10000'});
+      await admin.createNewToken({
+        name: '123', symbol: 1111, decimals: '12', amount: '10000',
+      });
       throw new Error('Test Failed');
     } catch (e) {
       expect(e.message).to.equal('1111 is not a valid string for CreateTokenOption.symbol');
     }
 
     try {
-      await admin.createNewToken({name: '123', symbol: 'BTC', decimals: '12', amount: -10000});
+      await admin.createNewToken({
+        name: '123', symbol: 'BTC', decimals: '12', amount: -10000,
+      });
       throw new Error('Test Failed');
     } catch (e) {
       expect(e.message).to.equal('-10000 is not a valid Unsigned Int for CreateUserOption.canCreateNewToken');
     }
   });
+  // }}}
 
+  // Create Token with correct options should response success {{{
   it('Create Token with correct options should response success', async () => {
     let admin = await User.Get(stub);
     expect(admin).exist;
@@ -294,7 +324,9 @@ describe('Test User', () => {
     expect(adminObj.wallet.Bitcoin.history[0].from).to.equal('admin');
     expect(adminObj.wallet.Bitcoin.history[0].from).to.equal('admin');
   });
+  // }}}
 
+  // Query Admin Again, it should have BTC in its wallet {{{
   it('Query Admin Again, it should have BTC in its wallet', async () => {
     const admin = await User.Get(stub);
     const adminObj = admin.toJSON();
@@ -311,7 +343,9 @@ describe('Test User', () => {
     expect(adminObj.wallet.Bitcoin.history[0].from).to.equal('admin');
     expect(adminObj.wallet.Bitcoin.history[0].from).to.equal('admin');
   });
+  // }}}
 
+  // Create a new User to transfer token to {{{
   it('Create a new User to transfer token to', async () => {
     stub.setUserCtx(cert);
 
@@ -325,7 +359,9 @@ describe('Test User', () => {
 
     stub.cleanUserCtx();
   });
+  // }}}
 
+  // Create a User that already exist should throw error {{{
   it('Create a User that already exist should throw error', async () => {
     stub.setUserCtx(cert);
     try {
@@ -335,7 +371,24 @@ describe('Test User', () => {
     }
     stub.cleanUserCtx();
   });
+  // }}}
 
+  // Transfer token to dummy target should throw error {{{
+  it('Transfer token to dummy target should throw error', async () => {
+    const admin = await User.Get(stub);
+    try {
+      await admin.transfer({
+        target: 'dummyUser',
+        tokenName: 'Bitcoin',
+        amount: '0.00001',
+      });
+    } catch (e) {
+      expect(e.message).to.equal('User dummyUser does not exist');
+    }
+  });
+  // }}}
+
+  // Transfer token with correct options should success {{{
   it('Transfer token with correct options should success', async () => {
     const admin = await User.Get(stub);
     const res = await admin.transfer({
@@ -354,7 +407,9 @@ describe('Test User', () => {
     expect(resp.wallet.Bitcoin.history[1].to).to.equal(target.id);
     expect(resp.wallet.Bitcoin.history[1].amount).to.equal('0.00001');
   });
+  // }}}
 
+  // Get Target, target should earn token {{{
   it('Get Target, target should earn token', async () => {
     stub.setUserCtx(cert);
     let targetUser = await User.Get(stub);
@@ -369,7 +424,43 @@ describe('Test User', () => {
     expect(targetUser.wallet.Bitcoin.history.length).to.equal(1);
     stub.cleanUserCtx();
   });
+  // }}}
 
+  // Target User transfer an amount larger than his wallet balance should throw error {{{
+  it('Target User transfer an amount larger than his wallet balance should throw error', async () => {
+    stub.setUserCtx(cert);
+    const targetUser = await User.Get(stub, target.id);
+    try {
+      await targetUser.transfer({
+        target: target.id,
+        tokenName: 'Bitcoin',
+        amount: '1',
+      });
+    } catch (e) {
+      expect(e.message).to.equal('Do not have enough token');
+    }
+    stub.cleanUserCtx();
+  });
+  // }}}
+
+  // Target User transfer a token does not exists in his wallet should throw error {{{
+  it('Target User transfer a token does not exists in his wallet should throw error', async () => {
+    stub.setUserCtx(cert);
+    const targetUser = await User.Get(stub, target.id);
+    try {
+      await targetUser.transfer({
+        target: target.id,
+        tokenName: 'Eth',
+        amount: '1',
+      });
+    } catch (e) {
+      expect(e.message).to.equal('expend - There is not enough token Eth in wallet');
+    }
+    stub.cleanUserCtx();
+  });
+  // }}}
+
+  // Non-admin user can not call Update {{{
   it('Non-admin user can not call Update', async () => {
     stub.setUserCtx(cert);
     try {
@@ -380,7 +471,9 @@ describe('Test User', () => {
     }
     stub.cleanUserCtx();
   });
+  // }}}
 
+  // Update a user that does not exist should throw error {{{
   it('Update a user that does not exist should throw error', async () => {
     try {
       await User.Update(stub, 'dummyUser', { role: 'admin' });
@@ -389,10 +482,13 @@ describe('Test User', () => {
       expect(e.message).to.equal('User dummyUser does not exist');
     }
   });
+  // }}}
 
+  // Admin can update a User to grant admin permission {{{
   it('Admin can update a User to grant admin permission', async () => {
     const newAdmin = await User.Update(stub, target.id, { role: 'admin' });
     expect(newAdmin).exist;
     expect(newAdmin.role).to.equal('admin');
   });
+  // }}}
 });
