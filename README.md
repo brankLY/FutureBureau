@@ -17,10 +17,17 @@ Earth is the chaincode for blockchain token and user management.
 
 Earth项目的数值计算采用[mathjs](http://mathjs.org/)
 
-# Test
+# Lint
+
+Earth项目代码质量采用著名的[airbnb/javascript](https://github.com/airbnb/javascript)标准
 
 ```
 yarn lint # 对lib文件夹中的内容做静态检查
+```
+
+# Test
+
+```
 yarn test # 使用mocha运行单元测试
 ```
 
