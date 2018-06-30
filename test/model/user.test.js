@@ -291,7 +291,7 @@ describe('Test User', () => {
       });
       throw new Error('Test Failed');
     } catch (e) {
-      expect(e.message).to.equal('-10000 is not a valid Unsigned Int for CreateUserOption.canCreateNewToken');
+      expect(e.message).to.equal('-10000 is not a valid Unsigned Int for CreateUserOption.amount');
     }
   });
   // }}}
