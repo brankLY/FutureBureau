@@ -17,4 +17,4 @@ describe('Test Bureau', () => {
     expect(res.futureBureaus).to.deep.equal({});
     expect(res.stub).exist;
   });
-})
+});
