@@ -348,7 +348,7 @@ describe('Test User', () => {
       odds1: 1.1,
       odds2: 1.2,
       odds3: 1.3,
-    }
+    };
     admin = await admin.createNewFutureBureau(createFutureBereauRequest);
     const adminObj = admin.toJSON();
     expect(adminObj).exist;
@@ -459,7 +459,7 @@ describe('Test User', () => {
       chooseOdds: 1.1
       tokenName: 'GZH',
       amount: 10
-    })
+    });
     const resp = res.toJSON();
 
     expect(resp.bureau).exist;
