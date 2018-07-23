@@ -34,4 +34,4 @@ describe('Test FutureBureau', () => {
     expect(futureBureau.odds2).to.equal(1.2);
     expect(futureBureau.odds3).to.equal(1.3);
   });
-  
+});
