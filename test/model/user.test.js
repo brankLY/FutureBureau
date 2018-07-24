@@ -121,6 +121,7 @@ describe('Test User', () => {
     expect(user.name).to.equal(opts.name);
     expect(user.role).to.equal(opts.role);
     expect(user.wallet.tokens).to.deep.equal({});
+    expect(user.bureau.futureBureaus).to.deep.equal({});
     expect(user.canCreateNewToken).to.equal(false);
   });
   // }}}
@@ -159,7 +160,9 @@ describe('Test User', () => {
     expect(admin.role).to.equal('admin');
     expect(admin.canCreateNewToken).to.equal(false);
     expect(admin.wallet).exist;
+    expect(admin.bureau).exist;
     expect(admin.wallet.tokens).to.deep.equal({});
+    expect(admin.bureau.futureBureaus).to.deep.equal({});
     expect(admin.constructor.name).to.equal('User');
 
     let resp = admin.toString();
@@ -170,6 +173,7 @@ describe('Test User', () => {
     expect(resp.role).to.equal('admin');
     expect(resp.canCreateNewToken).to.equal(false);
     expect(resp.wallet).to.deep.equal({});
+    expect(resp.bureau).to.deep.equal({});
 
     admin = User.FROM_JSON(stub, resp);
     expect(admin).exist;
@@ -178,9 +182,12 @@ describe('Test User', () => {
     expect(admin.role).to.equal('admin');
     expect(admin.canCreateNewToken).to.equal(false);
     expect(admin.wallet).exist;
+    expect(admin.bureau).exist;
     expect(admin.wallet.tokens).to.deep.equal({});
+    expect(admin.bureau.futureBureaus).to.deep.equal({});
     expect(admin.constructor.name).to.equal('User');
     expect(admin.wallet.constructor.name).to.equal('Wallet');
+    expect(admin.bureau.constructor.name).to.equal('Bureau');
   });
   // }}}
 
@@ -325,6 +332,40 @@ describe('Test User', () => {
     expect(adminObj.wallet.Bitcoin.history[0].from).to.equal('admin');
   });
   // }}}
+  
+  it('Create FutureBereau with correct options should response success', async () => {
+    let admin = await User.Get(stub);
+    expect(admin).exist;
+    const createFutureBereauRequest = {
+      name: 'aaa',
+      creator: 'zhangsan',
+      content: 'bbbb',
+      endTime: '2018-7-23 10:00',
+      option1: 'a1',
+      option2: 'b2',
+      option3: 'c3',
+      judgePerson: 'xyh',
+      odds1: 1.1,
+      odds2: 1.2,
+      odds3: 1.3,
+    };
+    admin = await admin.createNewFutureBureau(createFutureBereauRequest);
+    const adminObj = admin.toJSON();
+    expect(adminObj).exist;
+    expect(adminObj.bureau).exist;
+    expect(adminObj.bureau.aaa).exist;
+    expect(adminObj.bureau.aaa.name).to.equal('aaa');
+    expect(adminObj.bureau.aaa.creator).to.equal('zhangsan');
+    expect(adminObj.bureau.aaa.content).to.equal('bbbb');
+    expect(adminObj.bureau.aaa.endTime).to.equal('2018-7-23 10:00');
+    expect(adminObj.bureau.aaa.option1).to.equal('a1');
+    expect(adminObj.bureau.aaa.option2).to.equal('b2');
+    expect(adminObj.bureau.aaa.option3).to.equal('c3');
+    expect(adminObj.bureau.aaa.judgePerson).to.equal('xyh');
+    expect(adminObj.bureau.aaa.odds1).to.equal(1.1);
+    expect(adminObj.bureau.aaa.odds2).to.equal(1.2);
+    expect(adminObj.bureau.aaa.odds3).to.equal(1.3);
+  });
 
   // Query Admin Again, it should have BTC in its wallet {{{
   it('Query Admin Again, it should have BTC in its wallet', async () => {
@@ -408,6 +449,30 @@ describe('Test User', () => {
     expect(resp.wallet.Bitcoin.history[1].amount).to.equal('0.00001');
   });
   // }}}
+
+  it('BetTransfer tokne with correct options should success', async () => {
+    const admin = await User.Get(stub);
+    const res = await admin.betTransfer({
+      target: target.id,
+      futureBureauName: 'aaa',
+      chooseOption: 'a1',
+      chooseOdds: 1.1,
+      tokenName: 'GZH',
+      amount: 10,
+    });
+    const resp = res.toJSON();
+
+    expect(resp.bureau).exist;
+    expect(resp.bureau.aaa).exist;
+    expect(resp.bureau.aaa.history).exist;
+    expect(resp.bureau.aaa.history.length).to.equal(6);
+    expect(resp.bureau.aaa.history[1].from).to.equal(target.id);
+    expect(resp.bureau.aaa.history[1].to).to.equal('admin');
+    expect(resp.bureau.aaa.history[1].chooseOption).to.equal('a1');
+    expect(resp.bureau.aaa.history[1].chooseOdds).to.equal(1.1);
+    expect(resp.bureau.aaa.history[1].tokenName).to.equal('GZH');
+    expect(resp.bureau.aaa.history[1].amount).to.equal(10);
+  });
 
   // Get Target, target should earn token {{{
   it('Get Target, target should earn token', async () => {
