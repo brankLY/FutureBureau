@@ -337,6 +337,7 @@ describe('Test User', () => {
   it('Create FutureBereau with correct options should response success', async () => {
     let admin = await User.Get(stub);
     expect(admin).exist;
+    expect(admin.canCreateNewFutureBureau).to.equal(true);
     const createFutureBereauRequest = {
       name: 'aaa',
       creator: 'zhangsan',
@@ -352,6 +353,7 @@ describe('Test User', () => {
     admin = await admin.createNewFutureBureau(createFutureBereauRequest);
     const adminObj = admin.toJSON();
     expect(adminObj).exist;
+    expect(adminObj.canCreateNewFutureBureau).to.equal(false);
     expect(adminObj.bureau).exist;
     expect(adminObj.bureau.aaa).exist;
     expect(adminObj.bureau.aaa.name).to.equal('aaa');
