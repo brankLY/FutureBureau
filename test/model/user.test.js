@@ -365,7 +365,6 @@ describe('Test User', () => {
     expect(adminObj).exist;
     expect(adminObj.canCreateNewFutureBureau).to.equal(false);
     expect(adminObj.bureau).exist;
-    expect(adminObj.bureau.aaa).exist;
     expect(adminObj.bureau.aaa.name).to.equal('aaa');
     expect(adminObj.bureau.aaa.creator).to.equal('admin');
     expect(adminObj.bureau.aaa.content).to.equal('bbbb');
