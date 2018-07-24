@@ -43,6 +43,8 @@ class Chaincode {
     switch (fcn) {
       case 'user.query':
         return UserHandler.getOne(stub, params);
+      case 'user.queryFutureBureau':
+        return UserHandler.getOneFutureBureau(stub, params);
       case 'user.create':
         return UserHandler.create(stub, params);
       case 'user.update':
