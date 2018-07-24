@@ -214,10 +214,18 @@ describe('Test User', () => {
 
   // Update User to grant createNewToken permission {{{
   it('Update User to grant createNewToken permission', async () => {
-    const admin = await User.Update(stub, 'admin', { canCreateNewToken: true ,canCreateNewFutureBureau: true});
+    const admin = await User.Update(stub, 'admin', { canCreateNewToken: true });
 
     expect(admin).exist;
     expect(admin.canCreateNewToken).to.equal(true);
+  });
+  // }}}
+
+  // Update User to grant createNewFutureBureau permission {{{
+  it('Update User to grant createNewFutureBureau permission', async () => {
+    const admin = await User.UpdateBureau(stub, 'admin', { canCreateNewFutureBureau: true });
+
+    expect(admin).exist;
     expect(admin.canCreateNewFutureBureau).to.equal(true);
   });
   // }}}

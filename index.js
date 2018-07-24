@@ -47,6 +47,8 @@ class Chaincode {
         return UserHandler.create(stub, params);
       case 'user.update':
         return UserHandler.update(stub, params);
+      case 'user.updateBureau':
+        return UserHandler.updateBureau(stub, params);
       case 'user.createToken':
         return UserHandler.createToken(stub, params);
       case 'user.transfer':
