@@ -359,7 +359,7 @@ describe('Test User', () => {
     expect(adminObj.bureau).exist;
     expect(adminObj.bureau.aaa).exist;
     expect(adminObj.bureau.aaa.name).to.equal('aaa');
-    expect(adminObj.bureau.aaa.creator).to.equal('zhangsan');
+    expect(adminObj.bureau.aaa.creator).to.equal('admin');
     expect(adminObj.bureau.aaa.content).to.equal('bbbb');
     expect(adminObj.bureau.aaa.endTime).to.equal('2018-7-23 10:00');
     expect(adminObj.bureau.aaa.option1).to.equal('a1');
