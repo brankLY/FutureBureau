@@ -21,7 +21,7 @@ describe('Test FutureBureau', () => {
       odds3: 1.3,
     };
 
-    const futureBureau = await FutureBureau.create(stub, options);
+    const futureBureau = await FutureBureau.Create(stub, options);
     expect(futureBureau.name).to.equal('aaa');
     expect(futureBureau.creator).to.equal('zhangsan');
     expect(futureBureau.content).to.equal('bbbb');

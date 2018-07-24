@@ -12,7 +12,7 @@ describe('Test Bureau', () => {
   });
 
   it('NEW_EMPTY_BUREAU should response an empty array exists', () => {
-    const res = Bureau.NEW_EMPTY_WALLET(stub);
+    const res = Bureau.NEW_EMPTY_BUREAU(stub);
     expect(res).exist;
     expect(res.futureBureaus).to.deep.equal({});
     expect(res.stub).exist;
