@@ -456,9 +456,9 @@ describe('Test User', () => {
       target: target.id,
       futureBureauName: 'aaa',
       chooseOption: 'a1',
-      chooseOdds: 1.1
+      chooseOdds: 1.1,
       tokenName: 'GZH',
-      amount: 10
+      amount: 10,
     });
     const resp = res.toJSON();
 
