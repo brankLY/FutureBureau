@@ -123,6 +123,7 @@ describe('Test User', () => {
     expect(user.wallet.tokens).to.deep.equal({});
     expect(user.bureau.futureBureaus).to.deep.equal({});
     expect(user.canCreateNewToken).to.equal(false);
+    expect(user.canCreateNewFutureBureau).to.equal(false);
   });
   // }}}
 
