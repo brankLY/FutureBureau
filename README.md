@@ -1,25 +1,25 @@
-# Earth
+# FutureBureau
 
-Build: ![CircleCI](https://circleci.com/gh/XDMu/Earth.svg?style=svg&circle-token=4cb35b539516bb03931618c69ad11933bf24f60d)
+Build: ![CircleCI](https://circleci.com/gh/XDMu/FutureBureau.svg?style=svg&circle-token=4cb35b539516bb03931618c69ad11933bf24f60d)
 
-Earth is the chaincode for blockchain token and user management.
+FutureBureau is the chaincode for blockchain futureBureau and user management.
 
 ## Currently support
 
 1. 创建新用户
 2. Admin更新用户信息
-    - 将普通用户升级为admin用户
-    - 授予某个用户创建代币的权限
-3. 查询用户信息
-4. 交易代币
+    - 授予某个用户创建未来局的权限
+3. 查询未来局信息
+4. 预测
+5. 判决结果
 
 # 数值计算说明
 
-Earth项目的数值计算采用[mathjs](http://mathjs.org/)
+FutureBureau项目的数值计算采用[mathjs](http://mathjs.org/)
 
 # Lint
 
-Earth项目代码质量采用著名的[airbnb/javascript](https://github.com/airbnb/javascript)标准
+FutureBureau项目代码质量采用著名的[airbnb/javascript](https://github.com/airbnb/javascript)标准
 
 ```
 yarn lint # 对lib文件夹中的内容做静态检查
@@ -34,7 +34,7 @@ yarn test # 使用mocha运行单元测试
 # Folder Structure
 
 ```
-Earth
+FutureBureau
   |
   \index.js # 入口文件，负责请求的分发
   \package.json # node项目文件, npm start会执行node index.js
