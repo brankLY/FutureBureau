@@ -1,7 +1,7 @@
 {
   "name": "futureBureau",
   "version": "0.0.1",
-  "description": "Chaincode for token management",
+  "description": "Chaincode for futurebureau management",
   "main": "index.js",
   "scripts": {
     "test": "FUTUREBUREAU_LOGGING_LEVEL=none nyc mocha test/**/*.test.js",
