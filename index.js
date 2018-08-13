@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 const shim = require('fabric-shim');
 
-const logger = require('./lib/utils/Logger').getLogger('Earth:index.js');
+const logger = require('./lib/utils/Logger').getLogger('FutureBureau:index.js');
 const User = require('./lib/model/User');
 const Response = require('./lib/utils/Response');
 
@@ -22,10 +22,10 @@ class Chaincode {
       const bootstrapUser = {
         id: 'admin',
         role: 'admin',
-        name: 'Earth BlockChain Bootstrap User',
+        name: 'FutureBureau BlockChain Bootstrap User',
       };
       const user = await User.Create(stub, bootstrapUser, true);
-      logger.debug('Successfully Created Bootstrap Earth Admin');
+      logger.debug('Successfully Created Bootstrap FutureBureau Admin');
       logger.exit(method);
       return Response(true, user.toString());
     } catch (e) {
