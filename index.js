@@ -6,6 +6,7 @@ const User = require('./lib/model/User');
 const Response = require('./lib/utils/Response');
 
 const UserHandler = require('./lib/handler/UserHandler');
+const TokenHandler = require('./lib/handler/TokenHandler');
 
 class Chaincode {
   async Init(stub) {
@@ -55,6 +56,10 @@ class Chaincode {
         return UserHandler.createToken(stub, params);
       case 'user.transfer':
         return UserHandler.transfer(stub, params);
+      case 'token.getInfo':
+        return TokenHandler.GetTokenInfo(stub, params);
+      case 'token.update':
+        return TokenHandler.Update(stub, params);
       case 'user.betTransfer':
         return UserHandler.betTransfer(stub, params);
       case 'user.createFutureBureau':
