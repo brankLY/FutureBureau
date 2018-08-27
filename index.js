@@ -53,7 +53,7 @@ class Chaincode {
       case 'user.updateBureau':
         return UserHandler.updateBureau(stub, params);
       case 'user.createToken':
-        return TokenHandler.createToken(stub, params);
+        return UserHandler.createToken(stub, params);
       case 'user.transfer':
         return UserHandler.transfer(stub, params);
       case 'token.getInfo':
