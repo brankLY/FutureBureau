@@ -69,6 +69,8 @@ class Chaincode {
         return UserHandler.settle(stub, params);
       case 'bureau.initContractAccount':
         return BureauHandler.initContractAccount(stub, params);
+      case 'bureau.getAll':
+        return BureauHandler.getAll();
       default:
         return shim.error(Buffer.from(`${fcn} is not a valid function name`));
     }
