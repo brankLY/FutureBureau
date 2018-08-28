@@ -7,6 +7,7 @@ const Response = require('./lib/utils/Response');
 
 const UserHandler = require('./lib/handler/UserHandler');
 const TokenHandler = require('./lib/handler/TokenHandler');
+const BureauHandler = require('./lib/handler/BureauHandler');
 
 class Chaincode {
   async Init(stub) {
