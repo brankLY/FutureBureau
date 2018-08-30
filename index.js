@@ -70,7 +70,7 @@ class Chaincode {
       case 'bureau.initContractAccount':
         return BureauHandler.initContractAccount(stub, params);
       case 'bureau.getAll':
-        return BureauHandler.getAll();
+        return BureauHandler.getAll(stub);
       case 'test':
         return UserHandler.withdraw(stub, params);
       default:
