@@ -72,7 +72,7 @@ class Chaincode {
       case 'bureau.getAll':
         return BureauHandler.getAll();
       case 'test':
-        return Test.transferFromContractAccount(stub, params);
+        return UserHandler.withdraw(stub, params);
       default:
         return shim.error(Buffer.from(`${fcn} is not a valid function name`));
     }
