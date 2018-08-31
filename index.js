@@ -27,8 +27,6 @@ class Chaincode {
         name: 'FutureBureau BlockChain Bootstrap User',
       };
       const user = await User.Create(stub, bootstrapUser, true);
-      const contractAccount = await BureauHandler.initContractAccount(stub);
-      logger.debug('Successfully Created contract account');
       logger.debug('Successfully Created Bootstrap FutureBureau Admin');
       logger.exit(method);
       return Response(true, user.toString());
