@@ -9,6 +9,7 @@ const UserHandler = require('./lib/handler/UserHandler');
 const TokenHandler = require('./lib/handler/TokenHandler');
 const BureauHandler = require('./lib/handler/BureauHandler');
 
+
 class Chaincode {
   async Init(stub) {
     const method = 'init';
@@ -72,7 +73,7 @@ class Chaincode {
       case 'bureau.getAll':
         return BureauHandler.getAll(stub);
       case 'test':
-        return UserHandler.withdraw(stub, params);
+        return UserHandler.justTest(stub, params);
       default:
         return shim.error(Buffer.from(`${fcn} is not a valid function name`));
     }
